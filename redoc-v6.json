@@ -83,12 +83,6 @@
                                 "properties": {
                                     "integrations": {
                                         "description": "Integrations",
-                                        "enum": [
-                                            "jawbone",
-                                            "underarmour",
-                                            "healthkit",
-                                            "googlefit"
-                                        ],
                                         "in": "body",
                                         "items": {
                                             "$ref": "#/components/schemas/integration"
