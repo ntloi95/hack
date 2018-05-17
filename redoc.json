@@ -99,23 +99,9 @@
         },
         "responses": {
           "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/userResponse"
-                }
-              }
-            },
             "description": "Update user success."
           },
           "default": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/appError"
-                }
-              }
-            },
             "description": "Unexpected error"
           }
         },
