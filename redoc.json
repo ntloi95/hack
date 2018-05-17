@@ -2,7 +2,6 @@
   "components": {
     "schemas": {
       "integration": {
-        "description": "Integration type.",
         "enum": [
           "jawbone",
           "underarmour",
@@ -12,10 +11,8 @@
         "type": "string"
       },
       "user": {
-        "description": "User defines data model for User.",
         "properties": {
           "integrations": {
-            "description": "Array of fitness partners user may have connected to our app.",
             "example": [
               "jawbone",
               "underarmour"
@@ -29,10 +26,8 @@
         "type": "object"
       },
       "userResponse": {
-        "description": "UserResponse represents a response item for User.",
         "properties": {
           "integrations": {
-            "description": "Array of fitness partners user may have connected to our app.",
             "example": [
               "jawbone",
               "underarmour"
@@ -61,7 +56,6 @@
         "operationId": "updateUserItem",
         "parameters": [
           {
-            "description": "Locale",
             "in": "header",
             "name": "locale",
             "required": true,
@@ -76,7 +70,6 @@
               "schema": {
                 "properties": {
                   "integrations": {
-                    "description": "Integrations",
                     "enum": [
                       "jawbone",
                       "underarmour",
@@ -99,10 +92,8 @@
         },
         "responses": {
           "200": {
-            "description": "Update user success."
           },
           "default": {
-            "description": "Unexpected error"
           }
         },
         "security": [
@@ -119,7 +110,6 @@
   },
   "servers": [
     {
-      "description": "Abc",
       "url": "https://abc.com"
     }
   ],
