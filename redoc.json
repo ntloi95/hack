@@ -1,0 +1,665 @@
+{
+  "components": {
+    "requestBodies": {
+      "batchUpsertAlarms": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "_items": {
+                  "description": "The list of alarms.",
+                  "in": "body",
+                  "items": {
+                    "$ref": "#/components/schemas/alarmInsertItem"
+                  },
+                  "maxItems": 100,
+                  "minItems": 1,
+                  "name": "_items",
+                  "type": "array"
+                }
+              },
+              "required": [
+                "_items"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "required": true
+      }
+    },
+    "schemas": {
+      "BSONTimestamp": {
+        "description": "BSONTimestamp represents an date by embeds a time.Time.",
+        "type": "object"
+      },
+      "Date": {
+        "description": "Date represents an instant in date by embeds a time.Time.\nDate use time.Time to store a date in UTC, so before get\nyear, month and day, Date.Time must be converted to UTC timezone.",
+        "type": "object"
+      },
+      "PlatformType": {
+        "description": "PlatformType represent a platform of asset",
+        "type": "string"
+      },
+      "Time": {
+        "description": "A Time represents an instant in time with nanosecond precision.",
+        "type": "object"
+      },
+      "UnitGroup": {
+        "description": "UnitGroup defines model for unit information",
+        "properties": {
+          "distance": {
+            "$ref": "#/components/schemas/unit"
+          },
+          "height": {
+            "$ref": "#/components/schemas/unit"
+          },
+          "weight": {
+            "$ref": "#/components/schemas/unit"
+          }
+        },
+        "type": "object"
+      },
+      "appError": {
+        "description": "AppError represents an error in application.",
+        "properties": {
+          "_error": {
+            "description": "The internal error code.",
+            "example": 500001,
+            "format": "int64",
+            "type": "integer"
+          },
+          "_errorDetails": {
+            "description": "The details about this error.\nThis field may be a string, a number or any JSON types.\nThis field may be contains stacktrace and will be omitted in production.",
+            "example": "The details of error.",
+            "type": "object"
+          },
+          "_errorMessage": {
+            "description": "The message of this error.",
+            "example": "Oops, something went wrong",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "asset": {
+        "description": "Asset defines data model for resource Asset",
+        "properties": {
+          "checksum": {
+            "type": "string"
+          },
+          "createdAt": {
+            "description": "The created time of this resource.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "downloadUrl": {
+            "type": "string"
+          },
+          "feature": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "platform": {
+            "$ref": "#/components/schemas/PlatformType"
+          },
+          "resolution": {
+            "type": "string"
+          },
+          "sku": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "description": "The updated time of this resource.",
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "authType": {
+        "description": "AuthType defines type for auth.",
+        "enum": [
+          "email",
+          "google",
+          "facebook",
+          "weibo",
+          "wechat"
+        ],
+        "type": "string"
+      },
+      "gender": {
+        "description": "Gender type.",
+        "enum": [
+          "M",
+          "F",
+          "O",
+          "NA"
+        ],
+        "type": "string"
+      },
+      "integration": {
+        "description": "Integration type.",
+        "enum": [
+          "jawbone",
+          "underarmour",
+          "healthkit",
+          "googlefit"
+        ],
+        "type": "string"
+      },
+      "itemMeta": {
+        "description": "ItemMeta defines item's meta data.",
+        "properties": {
+          "_etag": {
+            "description": "The Entity tag. This the last modified time in milliseconds of this resource.",
+            "example": 1525993410914,
+            "format": "int64",
+            "type": "integer"
+          },
+          "_isNew": {
+            "description": "The flag to determine whether this resource is a new created or not. This field\nis usually used modification response.",
+            "example": true,
+            "type": "boolean"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/links"
+          }
+        },
+        "type": "object"
+      },
+      "links": {
+        "description": "Links defines \"_links\" format in rest response format.",
+        "properties": {
+          "child": {
+            "type": "string"
+          },
+          "collection": {
+            "type": "string"
+          },
+          "next": {
+            "type": "string"
+          },
+          "parent": {
+            "type": "string"
+          },
+          "prev": {
+            "type": "string"
+          },
+          "self": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "mobilePlatform": {
+        "description": "MobilePlatform is the the platform the phone is running.",
+        "enum": [
+          "android",
+          "ios"
+        ],
+        "type": "string"
+      },
+      "modificationsMeta": {
+        "description": "ModificationsMeta defines result of a batch modify action.",
+        "properties": {
+          "nFailed": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "nInserted": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "nRemoved": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "nUpdated": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "modificationsResponse": {
+        "description": "ModificationsResponse defines response format for modification multiple resources.",
+        "properties": {
+          "_etag": {
+            "description": "The Entity tag. This the last modified time in milliseconds of resource.",
+            "example": 1525993410914,
+            "format": "int64",
+            "type": "integer"
+          },
+          "_items": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "_result": {
+            "$ref": "#/components/schemas/modificationsMeta"
+          }
+        },
+        "type": "object"
+      },
+      "pageMeta": {
+        "description": "PageMeta defines meta data in page response format.",
+        "properties": {
+          "hasNext": {
+            "description": "The flag to determine whether the this query can fetch the next page or not.",
+            "example": false,
+            "type": "boolean"
+          },
+          "page": {
+            "description": "The page will be return.",
+            "example": 1,
+            "format": "uint64",
+            "type": "integer"
+          },
+          "size": {
+            "description": "The maximum number of results to return per page.",
+            "example": 20,
+            "format": "uint64",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "pageResponse": {
+        "description": "PageResponse defines page response format.",
+        "properties": {
+          "_items": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/links"
+          },
+          "_range": {
+            "$ref": "#/components/schemas/pageMeta"
+          }
+        },
+        "type": "object"
+      },
+      "rangeMeta": {
+        "description": "RangeMeta defines meta data in range response format.",
+        "properties": {
+          "hasNext": {
+            "description": "The flag to determine whether the this query can fetch the next range or not.",
+            "example": false,
+            "type": "boolean"
+          },
+          "limit": {
+            "description": "The maximum number of results to return.",
+            "example": 20,
+            "format": "uint64",
+            "type": "integer"
+          },
+          "offset": {
+            "description": "Offset the list of returned results.",
+            "example": 100,
+            "format": "uint64",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "rangeResponse": {
+        "description": "RangeResponse defines range response format.",
+        "properties": {
+          "_items": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/links"
+          },
+          "_range": {
+            "$ref": "#/components/schemas/rangeMeta"
+          }
+        },
+        "type": "object"
+      },
+      "unit": {
+        "description": "Unit type.",
+        "enum": [
+          "metric",
+          "imperial"
+        ],
+        "type": "string"
+      },
+      "user": {
+        "description": "User defines data model for User.",
+        "properties": {
+          "activeDeviceId": {
+            "description": "The default device which is connected in case user has multiple devices.\nIt is recorded as the serial number.",
+            "example": "M0F1011009",
+            "type": "string"
+          },
+          "birthday": {
+            "format": "date",
+            "type": "string"
+          },
+          "brand": {
+            "description": "The brand name",
+            "example": "Fossil",
+            "type": "string"
+          },
+          "createdAt": {
+            "description": "The created time of this resource.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "diagnosticEnabled": {
+            "description": "Allow send diagnostic info.",
+            "type": "boolean"
+          },
+          "email": {
+            "description": "The email to register.\nNormally, this is the email address which user registered.",
+            "example": "user@fossil.com",
+            "type": "string"
+          },
+          "emailOptIn": {
+            "default": false,
+            "description": "Allow user to follow brand's advertising.",
+            "example": false,
+            "type": "boolean"
+          },
+          "firstName": {
+            "description": "Profile data.",
+            "type": "string"
+          },
+          "gender": {
+            "$ref": "#/components/schemas/gender"
+          },
+          "heightInCentimeters": {
+            "description": "Height in centimeters",
+            "example": 170,
+            "format": "int64",
+            "type": "integer"
+          },
+          "id": {
+            "description": "The id of user.",
+            "example": "Wu8LGFBgDAuDzFA8",
+            "type": "string"
+          },
+          "integrations": {
+            "description": "Array of fitness partners user may have connected to our app.",
+            "example": [
+              "jawbone",
+              "underarmour"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/integration"
+            },
+            "type": "array"
+          },
+          "isOnboardingComplete": {
+            "description": "The flag to determise whether user completed registration by entering\nprofile information (name, birthday, height, weight...)",
+            "example": true,
+            "type": "boolean"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "profilePicture": {
+            "description": "User's profile picture.\nIts value must be a picture url.",
+            "example": "https://profile-picture.url",
+            "type": "string"
+          },
+          "registrationComplete": {
+            "description": "The flag to determise whether user completed registration by entering\nprofile information (name, birthday, height, weight...)",
+            "example": true,
+            "type": "boolean"
+          },
+          "unitGroup": {
+            "$ref": "#/components/schemas/UnitGroup"
+          },
+          "updatedAt": {
+            "description": "The updated time of this resource.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "username": {
+            "description": "Username for login.\nNormally, this is the email address which user registered.",
+            "example": "user@fossil.com",
+            "type": "string"
+          },
+          "weightInGrams": {
+            "description": "Weight in grams",
+            "example": 68000,
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "userResponse": {
+        "description": "UserResponse represents a response item for User.",
+        "properties": {
+          "_etag": {
+            "description": "The Entity tag. This the last modified time in milliseconds of this resource.",
+            "example": 1525993410914,
+            "format": "int64",
+            "type": "integer"
+          },
+          "_isNew": {
+            "description": "The flag to determine whether this resource is a new created or not. This field\nis usually used modification response.",
+            "example": true,
+            "type": "boolean"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/links"
+          },
+          "activeDeviceId": {
+            "description": "The default device which is connected in case user has multiple devices.\nIt is recorded as the serial number.",
+            "example": "M0F1011009",
+            "type": "string"
+          },
+          "birthday": {
+            "format": "date",
+            "type": "string"
+          },
+          "brand": {
+            "description": "The brand name",
+            "example": "Fossil",
+            "type": "string"
+          },
+          "createdAt": {
+            "description": "The created time of this resource.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "diagnosticEnabled": {
+            "description": "Allow send diagnostic info.",
+            "type": "boolean"
+          },
+          "email": {
+            "description": "The email to register.\nNormally, this is the email address which user registered.",
+            "example": "user@fossil.com",
+            "type": "string"
+          },
+          "emailOptIn": {
+            "default": false,
+            "description": "Allow user to follow brand's advertising.",
+            "example": false,
+            "type": "boolean"
+          },
+          "firstName": {
+            "description": "Profile data.",
+            "type": "string"
+          },
+          "gender": {
+            "$ref": "#/components/schemas/gender"
+          },
+          "heightInCentimeters": {
+            "description": "Height in centimeters",
+            "example": 170,
+            "format": "int64",
+            "type": "integer"
+          },
+          "id": {
+            "description": "The id of user.",
+            "example": "Wu8LGFBgDAuDzFA8",
+            "type": "string"
+          },
+          "integrations": {
+            "description": "Array of fitness partners user may have connected to our app.",
+            "example": [
+              "jawbone",
+              "underarmour"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/integration"
+            },
+            "type": "array"
+          },
+          "isOnboardingComplete": {
+            "description": "The flag to determise whether user completed registration by entering\nprofile information (name, birthday, height, weight...)",
+            "example": true,
+            "type": "boolean"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "profilePicture": {
+            "description": "User's profile picture.\nIts value must be a picture url.",
+            "example": "https://profile-picture.url",
+            "type": "string"
+          },
+          "registrationComplete": {
+            "description": "The flag to determise whether user completed registration by entering\nprofile information (name, birthday, height, weight...)",
+            "example": true,
+            "type": "boolean"
+          },
+          "unitGroup": {
+            "$ref": "#/components/schemas/UnitGroup"
+          },
+          "updatedAt": {
+            "description": "The updated time of this resource.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "username": {
+            "description": "Username for login.\nNormally, this is the email address which user registered.",
+            "example": "user@fossil.com",
+            "type": "string"
+          },
+          "weightInGrams": {
+            "description": "Weight in grams",
+            "example": 68000,
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "bearerFormat": "JWT",
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "contact": {
+      "email": "sw-vn-backend@fossil.com",
+      "name": "Fossil Backend Team"
+    },
+    "title": "Fossil API Documentation",
+    "version": "v2"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/users/me": {
+      "patch": {
+        "operationId": "updateUserItem",
+        "parameters": [
+          {
+            "description": "Locale",
+            "in": "header",
+            "name": "locale",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "integrations": {
+                    "description": "Integrations",
+                    "enum": [
+                      "jawbone",
+                      "underarmour",
+                      "healthkit",
+                      "googlefit"
+                    ],
+                    "in": "body",
+                    "items": {
+                      "$ref": "#/components/schemas/integration"
+                    },
+                    "name": "integrations",
+                    "type": "array"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userResponse"
+                }
+              }
+            },
+            "description": "Update user success."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/appError"
+                }
+              }
+            },
+            "description": "Unexpected error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Updating an user item.",
+        "tags": [
+          "users"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Abc",
+      "url": "https://abc.com"
+    }
+  ],
+  "tags": []
+}
