@@ -1,0 +1,141 @@
+{
+  "components": {
+    "schemas": {
+      "integration": {
+        "description": "Integration type.",
+        "enum": [
+          "jawbone",
+          "underarmour",
+          "healthkit",
+          "googlefit"
+        ],
+        "type": "string"
+      },
+      "user": {
+        "description": "User defines data model for User.",
+        "properties": {
+          "integrations": {
+            "description": "Array of fitness partners user may have connected to our app.",
+            "example": [
+              "jawbone",
+              "underarmour"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/integration"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "userResponse": {
+        "description": "UserResponse represents a response item for User.",
+        "properties": {
+          "integrations": {
+            "description": "Array of fitness partners user may have connected to our app.",
+            "example": [
+              "jawbone",
+              "underarmour"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/integration"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "bearerFormat": "JWT",
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/users/me": {
+      "patch": {
+        "operationId": "updateUserItem",
+        "parameters": [
+          {
+            "description": "Locale",
+            "in": "header",
+            "name": "locale",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "integrations": {
+                    "description": "Integrations",
+                    "enum": [
+                      "jawbone",
+                      "underarmour",
+                      "healthkit",
+                      "googlefit"
+                    ],
+                    "in": "body",
+                    "items": {
+                      "$ref": "#/components/schemas/integration"
+                    },
+                    "name": "integrations",
+                    "type": "array"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userResponse"
+                }
+              }
+            },
+            "description": "Update user success."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userResponse"
+                }
+              }
+            },
+            "description": "Unexpected error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Updating an user item.",
+        "tags": [
+          "users"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Abc",
+      "url": "https://abc.com"
+    }
+  ],
+  "tags": []
+}
