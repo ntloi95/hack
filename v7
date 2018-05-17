@@ -1,0 +1,134 @@
+{
+    "components": {
+        "schemas": {
+            "integration": {
+                "description": "Integration type.",
+                "enum": [
+                    "jawbone",
+                    "underarmour",
+                    "healthkit",
+                    "googlefit"
+                ],
+                "type": "string"
+            },
+            "userResponse": {
+                "description": "UserResponse represents a response item for User.",
+                "properties": {
+                    "integrations": {
+                        "description": "Array of fitness partners user may have connected to our app.",
+                        "example": [
+                            "jawbone",
+                            "underarmour"
+                        ],
+                        "items": {
+                            "$ref": "#/components/schemas/integration"
+                        },
+                        "type": "array"
+                    }
+                },
+                "type": "object"
+            },
+            "appError": {
+                "description": "AppError represents an error in application.",
+                "properties": {
+                    "_error": {
+                        "description": "The internal error code.",
+                        "example": 500001,
+                        "format": "int64",
+                        "type": "integer"
+                    },
+                    "_errorDetails": {
+                        "description": "The details about this error.\nThis field may be a string, a number or any JSON types.\nThis field may be contains stacktrace and will be omitted in production.",
+                        "example": "The details of error.",
+                        "type": "object"
+                    },
+                    "_errorMessage": {
+                        "description": "The message of this error.",
+                        "example": "Oops, something went wrong",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "info": {
+        "contact": {
+            "email": "ahihi@gmail.com",
+            "name": "ahihi"
+        },
+        "title": "ahihi",
+        "version": "v2"
+    },
+    "openapi": "3.0.0",
+    "paths": {
+        "/users/me": {
+            "patch": {
+                "operationId": "updateUserItem",
+                "parameters": [
+                    {
+                        "description": "Locale",
+                        "in": "header",
+                        "name": "locale",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "integrations": {
+                                        "description": "Integrations",
+                                        "in": "body",
+                                        "items": {
+                                            "$ref": "#/components/schemas/integration"
+                                        },
+                                        "name": "integrations",
+                                        "type": "array"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userResponse"
+                                }
+                            }
+                        },
+                        "description": "Update user success."
+                    },
+                    "default": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/appError"
+                                }
+                            }
+                        },
+                        "description": "Unexpected error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Updating an user item.",
+                "tags": [
+                    "users"
+                ]
+            }
+        }
+    }
+}
