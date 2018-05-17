@@ -1678,6 +1678,82 @@
   "openapi": "3.0.0",
   "paths": {
     "/users/me": {
+      "delete": {
+        "operationId": "deleteUserItem",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": "Wu8LGFBgDAuDzFA8"
+                  },
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Delete user success."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/appError"
+                }
+              }
+            },
+            "description": "Unexpected error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Deleting an user item.",
+        "tags": [
+          "users"
+        ]
+      },
+      "get": {
+        "operationId": "getUserItem",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userResponse"
+                }
+              }
+            },
+            "description": "Get user success."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/appError"
+                }
+              }
+            },
+            "description": "Unexpected error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Getting an user item.",
+        "tags": [
+          "users"
+        ]
+      },
       "patch": {
         "operationId": "updateUserItem",
         "parameters": [
@@ -1833,7 +1909,7 @@
   "servers": [
     {
       "description": "abc",
-      "url": "https://abc.com"
+      "url": "https:abc.com"
     }
   ],
   "tags": []
