@@ -1,8 +1,7 @@
 {
   "components": {
     "requestBodies": {
-      "batchUpsert
-      s": {
+      "batchUpserts": {
         "content": {
           "application/json": {
             "schema": {
